@@ -1,0 +1,10 @@
+<h1>Job Hunting Books</h1>
+<h3>新規book</h3>
+<%= form_for @book do |f| %>
+  <div class="field">
+    <%= f.label :about %>
+    <%= f.text_field :about, :size => 140 %>
+  </div>
+  <%= f.submit "投稿する" %>
+<% end %>
+<%= link_to "Book一覧に戻る", books_path %>
