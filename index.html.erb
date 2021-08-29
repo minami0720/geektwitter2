@@ -1,52 +1,25 @@
-<h1>Job Hunting Books</h1>
+<h1>Book一覧</h1>
 
-<% if user_signed_in? %>
-<%= link_to "マイページへ", user_path(current_user.id) %>　
+<% @lectures.each do |t|%>
+<div style = 'margin:20px; border:2px double black; width:500px;padding-left:20px;'>
+   <h2> Book名：<%= t.name %> </h2>
+   <h4>投稿者:<%= t.username%></h4>
+
+<!--- 総合評価の星の部分 ---------->
+
+<div>
+<h2>総合評価：
+<span class="star-rating">
+   <span class="star-rating-front" style="width: <%= getPercent(t.overall) %>%;">★★★★★</span>
+   <span class="star-rating-back">★★★★★</span>
+</span> 
+</h2>
+</div>
+
+<!--- 総合評価の星の部分終わり------->
+
+
+</div>
 <% end %>
 
-<%= button_to 'ログアウト', destroy_user_session_path, method: :delete %>
-<h3>Book一覧</h3>
-
-<h3>投稿を検索</h3>
- <%= form_tag({controller:"books",action:"index"}, method: :get) do %>
-   <%= text_field_tag :search %>
-   <%= submit_tag '検索する'  %>
-   <% end %>
-
-   <%= link_to "新規投稿ページへ", new_book_path %>
-   <br>
-   <%= page_entries_info @books %>
-
-
-<div class="books-container">
-  <% @books.each do |t| %>
-    <div class="book">
-    <%= image_tag t.image_url, size: "250x200" if t.image? %>
-    <%= t.user.email %>
-      <%= t.about %>
-      <a href="/users/<%= t.user.id %>"><%= t.user.name %></a>
-
-      <% if user_signed_in? %>
-      <% if current_user.already_liked?(t) %>
-          <%= link_to book_like_path(id: t.id, book_id: t.id), method: :delete do %>
-            <i class="fas fa-heart"></i><%= t.likes.count %>
-          <% end %>
-      <% else %>
-          <%= link_to book_likes_path(id: t.id, book_id: t.id), method: :post do %>
-            <i class="far fa-heart"></i><%= t.likes.count %>
-          <% end %>
-      <% end %>
-  <% else %>
-  <i class="far fa-heart"></i><%= t.likes.count %>
-  <% end %>
-
-      <%= t.created_at %>
-      <%= link_to "詳細へ", book_path(t.id) %>
-      <% if user_signed_in? && current_user.id == t.user_id %>
-      <%= link_to "編集する", edit_book_path(t.id) %>
-      <%= button_to "削除する", book_path(t.id), method: :delete %>
-      <% end %>
-    </div>
-    <%= paginate @books %>
-  <% end %>
-</div>
+<%= link_to 'Book新規登録をする', lectures_new_path%>
